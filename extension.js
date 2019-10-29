@@ -50,7 +50,7 @@ const handleSearch = filesArray => {
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
-  let goToTest = vscode.commands.registerCommand('extension.goToTest', () => {
+  let goToTest = vscode.commands.registerCommand('gtt.goToTest', () => {
     // Get filename
     const { fileName, fileNameFull, isTest } = getFileName(vscode.window.activeTextEditor.document.fileName);
     const testPattern = `**/${fileName}{.[Ss]pec,[Tt]est*}*.js`;

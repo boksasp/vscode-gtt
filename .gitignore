@@ -105,5 +105,6 @@ dist
 
 # vs code
 .vscode
+*.vsix
 
 .DS_Store
