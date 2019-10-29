@@ -4,7 +4,7 @@ Note: developed with `javascript` in mind. Might not be suitable for many other 
 
 -----
 
-Type ⇧ &#8984; P to bring up the Command Palette.
+Type ⇧ &#8984; P (Ctrl+Shift+P, F1) to bring up the Command Palette.
 
 Type 'gtt' in the Command Palette and run the command:
 
