@@ -8,16 +8,16 @@ interface Match {
 
 export const getCurrentFileDetails = (filePath: string) => {
   const parts = filePath.split('/');
-  const fileNameFull = parts[parts.length - 1];
-  const fileName = fileNameFull.split(".")[0];
+  const fileNameWithExtension = parts[parts.length - 1];
+  const fileName = fileNameWithExtension.split(".")[0];
 
   const matchRegex = /.*((\.[Ss]pec)|([Tt]est.*).*\.js)/g;
-  const isTest = fileNameFull.match(matchRegex);
+  const match = fileNameWithExtension.match(matchRegex);
 
   return {
     fileName,
-    fileNameFull,
-    isTest
+    fileNameWithExtension,
+    isTest: match === null ? false : true
   };
 };
 
@@ -51,19 +51,23 @@ export const handleSearch = (filesArray: Array<vscode.Uri>) => {
 };
 
 export const getTestSubjectPattern = (fileName: string) => {
-  const regex: RegExp = new RegExp(/^(.+)(?:(?:.[Tt]est)|(?:[Tt]est)|(?:.[Tt]ests)|(?:[Tt]ests)|(?:.[Ss]pec))\.js$/g); // TODO: skriv om til /i
-  const testSubjectName: RegExpExecArray | null = regex.exec(fileName);
-  let finalTestSubjectName: string = "";
+  const regex = new RegExp(/^(.+)(?:(?:.[Tt]est)|(?:[Tt]est)|(?:.[Tt]ests)|(?:[Tt]ests)|(?:.[Ss]pec))\.js$/g); // TODO: skriv om til /i
+  const testSubjectName = regex.exec(fileName);
+  let finalTestSubjectName = "";
+
   if (testSubjectName !== null) {
     finalTestSubjectName = testSubjectName[1].substring(0, testSubjectName[1].toLowerCase().indexOf('test'));
   } else {
     vscode.window.showInformationMessage(constants.TEST_OR_SUBJECT_NOT_FOUND);
   }
+
   let file = "";
+
   if (finalTestSubjectName.length > 0) {
     file = finalTestSubjectName;
   } else if (testSubjectName !== null && testSubjectName.length > 0) {
     file = testSubjectName[1];
   }
+
   return `**/${file}.js`;
 };

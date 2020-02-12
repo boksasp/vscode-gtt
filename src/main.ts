@@ -5,24 +5,26 @@ import * as constants from './constants';
 /**
  * @param {vscode.ExtensionContext} context
  */
-export function activate(context: vscode.ExtensionContext) {
-  let goToTest = vscode.commands.registerCommand('gtt.goToTest', () => {
-    // Get filename
+export const activate = (context: vscode.ExtensionContext) => {
+  const goToTest = vscode.commands.registerCommand('gtt.goToTest', () => {
     const activeTextEditor = vscode.window.activeTextEditor;
+
     if (activeTextEditor !== undefined) {
-      const { fileName, fileNameFull, isTest } = util.getCurrentFileDetails(activeTextEditor.document.fileName);
-      let testPattern;
+      const { fileName, fileNameWithExtension, isTest } = util.getCurrentFileDetails(activeTextEditor.document.fileName);
+      let globPattern;
+
       if (isTest) {
-        testPattern = util.getTestSubjectPattern(fileNameFull);
+        globPattern = util.getTestSubjectPattern(fileNameWithExtension);
       } else {
-        testPattern = `**/${fileName}{.[Ss]pec,[Tt]est*}*.js`;
+        globPattern = `**/${fileName}{*[Ss]pec,*[Tt]est*}*.js`;
       }
-      vscode.workspace.findFiles(testPattern, '**/{node_modules,\.vscode}/*', 10).then(filesArray => util.handleSearch(filesArray));
+
+      vscode.workspace.findFiles(globPattern, '**/{node_modules,\.vscode}/*', 10).then(filesArray => util.handleSearch(filesArray));
     } else {
       vscode.window.showInformationMessage(constants.ACTIVE_TEXT_EDITOR_UNDEFINED);
     }
   });
   context.subscriptions.push(goToTest);
-}
+};
 
-export function deactivate() { }
+export const deactivate = () => {};

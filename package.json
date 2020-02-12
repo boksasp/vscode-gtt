@@ -21,7 +21,7 @@
 	"activationEvents": [
 		"onCommand:gtt.goToTest"
 	],
-	"main": "./out/main.js",
+	"main": "./out/main",
 	"contributes": {
 		"commands": [
 			{
@@ -29,10 +29,21 @@
 				"title": "Go to test/test subject",
 				"category": "vscode-gtt"
 			}
-		]
+    ],
+    "configuration": {
+      "title": "gtt",
+      "properties": {
+        "gtt.testFileEnding": {
+          "type": "string",
+          "default": "{.[Ss]pec,[Tt]est*}*.js",
+          "markdownDescription": "Glob pattern to match the ending of your test file names. Used like this for finding test files in your workspace: `**/${fileName}{.[Ss]pec,[Tt]est*}*.js` where `{.[Ss]pec,[Tt]est*}*.js` is your test file ending."
+        }
+      }
+    }
 	},
 	"scripts": {
-		"vscode:prepublish": "npm run compile",
+    "lint": "tslint --project .",
+		"vscode:prepublish": "npm run lint && npm run compile",
 		"compile": "tsc -p ./",
 		"watch": "tsc -watch -p ./",
 		"pretest": "npm run compile",
