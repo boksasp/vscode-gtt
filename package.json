@@ -21,7 +21,7 @@
 	"activationEvents": [
 		"onCommand:gtt.goToTest"
 	],
-	"main": "./out/main",
+	"main": "./out/main.js",
 	"contributes": {
 		"commands": [
 			{
